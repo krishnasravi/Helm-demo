@@ -58,6 +58,6 @@ jobs:
 
       - name: Update kube config
         run: aws eks update-kubeconfig --name demo
-      - name: Deploy java helm chart to EKS
+      - name: Deploy helm-demo app to EKS
         run: |
-           helm install helm-demo ./helm-demo      
+           kubectl apply -f ./manifest/.     
