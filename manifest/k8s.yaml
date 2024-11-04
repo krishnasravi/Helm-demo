@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: helm-demo
-        image: helm-demo:latest # Replace with your Docker image
+        image: 209479267348.dkr.ecr.us-east-1.amazonaws.com/helm-demo:latest # Replace with your Docker image
         ports:
         - containerPort: 8080
 ---
