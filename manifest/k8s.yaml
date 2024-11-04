@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: helm-demo-Deployment
+  name: helm-demo
 spec:
   replicas: 1
   selector:
@@ -13,7 +13,7 @@ spec:
         app: helm-demo
     spec:
       containers:
-      - name: helm-demo-container
+      - name: helm-demo
         image: helm-demo:latest # Replace with your Docker image
         ports:
         - containerPort: 8080
@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: helm-demo-service
+  name: helm-demo
 spec:
   type: LoadBalancer # Change to NodePort if needed
   selector:
