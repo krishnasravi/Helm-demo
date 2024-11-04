@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build, Analyze, and Dockerize
+    name: CI-CD
     runs-on: ubuntu-latest
 
     steps:
@@ -58,3 +58,6 @@ jobs:
 
       - name: Update kube config
         run: aws eks update-kubeconfig --name demo
+      - name: Deploy java helm chart to EKS
+        run: |
+           helm install helm-demo ./helm-demo      
