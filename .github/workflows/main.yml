@@ -39,17 +39,46 @@ jobs:
       #       -Dsonar.host.url=https://your-sonarqube-server.com \
       #       -Dsonar.login=${SONAR_TOKEN}
 
-      # Step 5: Docker Build
-      - name: Build Docker Image
-        run: docker build -t krishna-sravi/helm-demo:${{ github.run_number }} .
+      # # Step 5: Docker Build
+      # - name: Build Docker Image
+      #   run: docker build -t krishna-sravi/helm-demo:${{ github.run_number }} .
 
-      # # Step 6: Docker Login
-      # - name: Docker Login
-      #   env:
-      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #   run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      # # # Step 6: Docker Login
+      # # - name: Docker Login
+      # #   env:
+      # #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      # #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      # #   run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
-      # # Step 7: Push Docker Image
-      # - name: Push Docker Image
-      #   run: docker push your_docker_image_name:latest
+      # # # Step 7: Push Docker Image
+      # # - name: Push Docker Image
+      # #   run: docker push your_docker_image_name:latest
+      
+      # Step 2: Set up kubectl      
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v2.0
+      with:
+        version: 'v1.27.0' # default is latest stable
+      id: install
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: helm-demo
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name demo      
