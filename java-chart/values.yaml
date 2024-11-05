@@ -44,11 +44,11 @@ service:
 
 ingress:
   enabled: true
-  className: ""
+  className: nginx
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
-  - host: aa6ff8de59b43430eae035a9b5c84c35-144840783.us-east-1.elb.amazonaws.com
+  - host: a946021132aaa4415a078553a6ac9b40-9bcf76deb6e3cfd4.elb.us-east-1.amazonaws.com
     paths:
     - path: /
       pathType: Prefix
