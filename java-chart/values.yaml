@@ -43,7 +43,7 @@ service:
   name: java-chart
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
