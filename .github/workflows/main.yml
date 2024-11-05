@@ -17,7 +17,7 @@ jobs:
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3       
 
       # Step 2: Set up JDK 17
       - name: Set up JDK 17
@@ -25,10 +25,32 @@ jobs:
         with:
           distribution: 'temurin' # Options: 'temurin', 'zulu', 'adopt', etc.
           java-version: '17'
+      
+      # # not able to perform in demo due to it is pvt repo
+      # - name: SonarQube Scan
+      #   uses: sonarsource/sonarcloud-github-action@master
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Store your SonarQube token in GitHub Secrets
+      #   with:
+      #     args: >
+      #       -Dsonar.projectKey=helm-demo
+      #       -Dsonar.organization=krishnasravi
+      #       -Dsonar.host.url=https://sonarcloud.io
+          
 
       # Step 3: Build with Maven (Package)
       - name: Build with Maven
         run: mvn clean package -DskipTests
+        
+      # # not able to perform in demo due to it is pvt repo
+      # - name: Veracode Scan
+      #   env:
+      #     VERACODE_API_ID: ${{ secrets.VERACODE_API_ID }}
+      #     VERACODE_API_KEY: ${{ secrets.VERACODE_API_KEY }}
+      #   run: |
+      #     curl -O https://analysiscenter.veracode.com/api/5.0/VeracodeAPI.jar
+      #     java -jar VeracodeAPI.jar -action uploadandscan -appname "helm-demo" -version "1.0" \
+      #       -filepath "path/to/your/package.jar"  # Path to your package        
       
       # Step 4: Set up kubectl      
       - name: Install kubectl
