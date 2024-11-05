@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: 209479267348.dkr.ecr.us-east-1.amazonaws.com/helm-demo
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
 
 imagePullSecrets: []
